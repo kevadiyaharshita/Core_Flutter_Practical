@@ -31,22 +31,22 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.all(16),
           child: Center(
             child: Column(children: [
-              Global.to_do_list_String.isEmpty
-                  ? Text(
-                      "No To Do",
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: theme_1),
-                    )
-                  : Text(
-                      "Click on + to Create New To-Do",
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: theme_1),
-                    ),
-              Container()
+              SizedBox(
+                height: 100,
+              ),
+              Container(
+                width: 300,
+                height: 300,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage('assets/images/To do list (1).gif'),
+                )),
+              ),
+              Text(
+                "Add Your To Do Here",
+                style: TextStyle(
+                    fontSize: 30, fontWeight: FontWeight.bold, color: theme_1),
+              ),
             ]),
           )),
       floatingActionButton: FloatingActionButton(

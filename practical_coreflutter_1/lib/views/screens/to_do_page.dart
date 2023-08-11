@@ -30,9 +30,24 @@ class _to_do_pageState extends State<to_do_page> {
     double w = s.width;
     return Scaffold(
         appBar: AppBar(
-          title: Text("To-Do List"),
+          title: Text(
+            "To-Do List",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+          ),
           foregroundColor: theme_5,
           backgroundColor: theme_1,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 30,
+            ),
+          ),
           centerTitle: true,
           actions: [
             IconButton(
@@ -115,6 +130,7 @@ class _to_do_pageState extends State<to_do_page> {
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               color: theme_4,
+                              border: Border.all(color: theme_1, width: 2),
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20)),
@@ -238,6 +254,29 @@ class _to_do_pageState extends State<to_do_page> {
                                             color: theme_2,
                                             borderRadius:
                                                 BorderRadius.circular(10)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              "       Hour",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 22),
+                                            ),
+                                            Text("     Min",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 22)),
+                                            Text("     Sec",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 22))
+                                          ],
+                                        ),
                                       ),
                                       Row(
                                         mainAxisAlignment:
@@ -254,7 +293,7 @@ class _to_do_pageState extends State<to_do_page> {
                                               squeeze: 1,
                                               onSelectedItemChanged: (val) {
                                                 setState(() {
-                                                  hour = val + 1;
+                                                  hour = val;
                                                 });
                                               },
                                               children: List.generate(
@@ -263,15 +302,18 @@ class _to_do_pageState extends State<to_do_page> {
                                                   width: 80,
                                                   height: 60,
                                                   child: Text(
-                                                    "${index + 1}",
+                                                    "${index}",
                                                     style: TextStyle(
-                                                        fontSize: 20,
-                                                        color: theme_1),
+                                                        fontSize: 24,
+                                                        color: theme_5,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
+                                          Spacer(),
                                           Container(
                                             width: 70,
                                             height: 100,
@@ -282,7 +324,7 @@ class _to_do_pageState extends State<to_do_page> {
                                               squeeze: 1,
                                               onSelectedItemChanged: (val) {
                                                 setState(() {
-                                                  min = val + 1;
+                                                  min = val;
                                                 });
                                               },
                                               children: List.generate(
@@ -291,15 +333,18 @@ class _to_do_pageState extends State<to_do_page> {
                                                   width: 80,
                                                   height: 60,
                                                   child: Text(
-                                                    "${index + 1}",
+                                                    "${index}",
                                                     style: TextStyle(
-                                                        fontSize: 20,
-                                                        color: theme_1),
+                                                        fontSize: 24,
+                                                        color: theme_5,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
+                                          Spacer(),
                                           Container(
                                             width: 70,
                                             height: 100,
@@ -310,7 +355,7 @@ class _to_do_pageState extends State<to_do_page> {
                                               squeeze: 1,
                                               onSelectedItemChanged: (val) {
                                                 setState(() {
-                                                  sec = val + 1;
+                                                  sec = val;
                                                 });
                                               },
                                               children: List.generate(
@@ -319,10 +364,12 @@ class _to_do_pageState extends State<to_do_page> {
                                                   width: 80,
                                                   height: 60,
                                                   child: Text(
-                                                    "${index + 1}",
+                                                    "${index}",
                                                     style: TextStyle(
-                                                        fontSize: 20,
-                                                        color: theme_1),
+                                                        fontSize: 24,
+                                                        color: theme_5,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
                                                 ),
                                               ),
