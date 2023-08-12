@@ -67,14 +67,14 @@ class _pdf_PageState extends State<pdf_Page> {
                             width: double.infinity,
                             height: 60,
                             decoration: pw.BoxDecoration(
-                              color: pdf_theme_1,
+                              color: pdf_theme_4,
                               borderRadius: pw.BorderRadius.circular(10),
                             ),
                             alignment: pw.Alignment.center,
                             child: pw.Text(
                                 (Global.isDone[index]) ? "Done" : "NotDone",
                                 style: pw.TextStyle(
-                                    color: pdf_theme_4,
+                                    color: pdf_theme_1,
                                     fontSize: 22,
                                     fontWeight: pw.FontWeight.bold)),
                           )

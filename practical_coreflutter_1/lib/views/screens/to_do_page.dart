@@ -14,6 +14,8 @@ class to_do_page extends StatefulWidget {
 class _to_do_pageState extends State<to_do_page> {
   TextEditingController title = TextEditingController();
 
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
   bool check_page = true;
 
   String title_Todo = "";
@@ -99,14 +101,40 @@ class _to_do_pageState extends State<to_do_page> {
                                 color: theme_4,
                                 fontStyle: FontStyle.italic),
                           ),
-                          trailing: Checkbox(
-                            onChanged: (val) {
-                              setState(() {
-                                Global.isDone[index] = val!;
-                              });
-                            },
-                            value: Global.isDone[index],
-                            // value: true,
+                          trailing: Container(
+                            width: 100,
+                            height: 50,
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  checkColor: theme_4,
+
+                                  onChanged: (val) {
+                                    setState(() {
+                                      Global.isDone[index] = val!;
+                                    });
+                                  },
+                                  value: Global.isDone[index],
+                                  // value: true,
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        Global.to_do_list_String
+                                            .removeAt(index);
+                                        Global.hour.removeAt(index);
+                                        Global.sec.removeAt(index);
+                                        Global.min.removeAt(index);
+                                        Global.to_do_Date.removeAt(index);
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.delete,
+                                      // size: 25,
+                                      color: theme_4,
+                                    ))
+                              ],
+                            ),
                           ),
                         ),
                       )),
@@ -129,321 +157,418 @@ class _to_do_pageState extends State<to_do_page> {
                             height: 600,
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: theme_4,
+                              color: theme_1,
                               border: Border.all(color: theme_1, width: 2),
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20)),
                             ),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Add Your To-Do Here",
-                                  style:
-                                      TextStyle(fontSize: 20, color: theme_1),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                TextFormField(
-                                  keyboardType: TextInputType.name,
-                                  style: TextStyle(color: theme_1),
-                                  decoration: InputDecoration(
-                                      focusColor: theme_1,
-                                      labelText: "Add To-Do Title",
-                                      hintStyle: TextStyle(color: theme_1),
-                                      labelStyle: TextStyle(
-                                        fontSize: 20,
-                                        color: theme_3,
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          borderSide: BorderSide(
-                                            color: theme_1,
-                                            width: 2,
-                                          )),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          borderSide: BorderSide(
-                                            color: theme_2,
-                                          )),
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          borderSide:
-                                              BorderSide(color: theme_4))),
-                                  onChanged: (val) {
-                                    title_Todo = val.toString();
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "Date",
-                                      style: TextStyle(
-                                          fontSize: 18, color: theme_1),
-                                    )),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                TextFormField(
-                                  keyboardType: TextInputType.name,
-                                  style: TextStyle(color: theme_1),
-                                  decoration: InputDecoration(
-                                      focusColor: theme_1,
-                                      labelText: "DD/MM/YYYY",
-                                      hintStyle: TextStyle(color: theme_1),
-                                      labelStyle: TextStyle(
-                                        fontSize: 20,
-                                        color: theme_3,
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          borderSide: BorderSide(
-                                            color: theme_1,
-                                            width: 2,
-                                          )),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          borderSide: BorderSide(
-                                            color: theme_2,
-                                          )),
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          borderSide:
-                                              BorderSide(color: theme_4))),
-                                  onChanged: (val) {
-                                    Date = val;
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "Time(HH:MM:SS)",
-                                      style: TextStyle(
-                                          fontSize: 18, color: theme_1),
-                                    )),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  height: 150,
-                                  width: w,
-                                  // color: theme_2,
-                                  alignment: Alignment.center,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        width: w,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                            color: theme_2,
+                            child: Form(
+                              key: formkey,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Add Your To-Do Here",
+                                    style:
+                                        TextStyle(fontSize: 20, color: theme_4),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.name,
+                                    style:
+                                        TextStyle(color: theme_4, fontSize: 18),
+                                    validator: (val) {
+                                      if (val!.isEmpty) {
+                                        return "Please Enter Title !!";
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    decoration: InputDecoration(
+                                        focusColor: theme_4,
+                                        labelText: "Add To-Do Title",
+                                        hintStyle: TextStyle(
+                                            color: theme_4, fontSize: 18),
+                                        labelStyle: TextStyle(
+                                          fontSize: 20,
+                                          color: theme_4,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
                                             borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Row(
+                                                BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: theme_5,
+                                              width: 2,
+                                            )),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: theme_2,
+                                            )),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide:
+                                                BorderSide(color: theme_4))),
+                                    onChanged: (val) {
+                                      title_Todo = val.toString();
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Date",
+                                        style: TextStyle(
+                                            fontSize: 18, color: theme_4),
+                                      )),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.name,
+                                    style: TextStyle(color: theme_4),
+                                    validator: (val) {
+                                      if (val!.isEmpty) {
+                                        // print("Harshita");
+                                        return "Please Enter Date !!";
+                                      } else {
+                                        // print("Atharva");
+                                        return null;
+                                      }
+                                    },
+                                    decoration: InputDecoration(
+                                        focusColor: theme_4,
+                                        labelText: "DD/MM/YYYY",
+                                        hintStyle: TextStyle(color: theme_4),
+                                        labelStyle: TextStyle(
+                                          fontSize: 20,
+                                          color: theme_3,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: theme_5,
+                                              width: 2,
+                                            )),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: theme_2,
+                                            )),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide:
+                                                BorderSide(color: theme_4))),
+                                    onChanged: (val) {
+                                      Date = val;
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Time(HH:MM:SS)",
+                                        style: TextStyle(
+                                            fontSize: 18, color: theme_4),
+                                      )),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                    height: 150,
+                                    width: w,
+                                    // color: theme_2,
+                                    alignment: Alignment.center,
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          width: w,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                              color: theme_3,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                "       Hour",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 22),
+                                              ),
+                                              Text("     Min",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 22)),
+                                              Text("     Sec",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 22))
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text(
-                                              "       Hour",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 22),
+                                            Spacer(),
+                                            Container(
+                                              width: 70,
+                                              height: 100,
+                                              child: ListWheelScrollView(
+                                                itemExtent: 50,
+                                                perspective: 0.01,
+                                                diameterRatio: 2.5,
+                                                squeeze: 1,
+                                                onSelectedItemChanged: (val) {
+                                                  setState(() {
+                                                    hour = val;
+                                                  });
+                                                },
+                                                children: List.generate(
+                                                  24,
+                                                  (index) => Container(
+                                                    width: 80,
+                                                    height: 60,
+                                                    child: Text(
+                                                      "${index}",
+                                                      style: TextStyle(
+                                                          fontSize: 24,
+                                                          color: theme_5,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                            Text("     Min",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 22)),
-                                            Text("     Sec",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 22))
+                                            Spacer(),
+                                            Container(
+                                              width: 70,
+                                              height: 100,
+                                              child: ListWheelScrollView(
+                                                itemExtent: 50,
+                                                perspective: 0.01,
+                                                diameterRatio: 2.5,
+                                                squeeze: 1,
+                                                onSelectedItemChanged: (val) {
+                                                  setState(() {
+                                                    min = val;
+                                                  });
+                                                },
+                                                children: List.generate(
+                                                  60,
+                                                  (index) => Container(
+                                                    width: 80,
+                                                    height: 60,
+                                                    child: Text(
+                                                      "${index}",
+                                                      style: TextStyle(
+                                                          fontSize: 24,
+                                                          color: theme_5,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            Container(
+                                              width: 70,
+                                              height: 100,
+                                              child: ListWheelScrollView(
+                                                itemExtent: 50,
+                                                perspective: 0.01,
+                                                diameterRatio: 2.5,
+                                                squeeze: 1,
+                                                onSelectedItemChanged: (val) {
+                                                  setState(() {
+                                                    sec = val;
+                                                  });
+                                                },
+                                                children: List.generate(
+                                                  60,
+                                                  (index) => Container(
+                                                    width: 80,
+                                                    height: 60,
+                                                    child: Text(
+                                                      "${index}",
+                                                      style: TextStyle(
+                                                          fontSize: 24,
+                                                          color: theme_5,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Spacer(),
                                           ],
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  // Spacer(),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            check_page = false;
+                                          });
+                                        },
+                                        child: Container(
+                                          width: 150,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: theme_4,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: theme_3,
+                                                offset: Offset(2, 2),
+                                                blurRadius: 2,
+                                              )
+                                            ],
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Cancel",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: theme_1),
+                                          ),
+                                        ),
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Spacer(),
-                                          Container(
-                                            width: 70,
-                                            height: 100,
-                                            child: ListWheelScrollView(
-                                              itemExtent: 50,
-                                              perspective: 0.01,
-                                              diameterRatio: 2.5,
-                                              squeeze: 1,
-                                              onSelectedItemChanged: (val) {
-                                                setState(() {
-                                                  hour = val;
-                                                });
-                                              },
-                                              children: List.generate(
-                                                24,
-                                                (index) => Container(
-                                                  width: 80,
-                                                  height: 60,
-                                                  child: Text(
-                                                    "${index}",
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            bool validated = formkey
+                                                .currentState!
+                                                .validate();
+                                            if (validated) {
+                                              formkey.currentState!.save();
+                                              Global.to_do_list_String
+                                                  .add(title_Todo!);
+                                              Global.hour.add(hour);
+                                              Global.min.add(min);
+                                              Global.sec.add(sec);
+                                              Global.to_do_Date.add(Date!);
+                                              check_page = false;
+                                              Global.isDone.add(false);
+                                              // Global.time_sort();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    "Successfully Saved!!",
                                                     style: TextStyle(
-                                                        fontSize: 24,
-                                                        color: theme_5,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                        color: theme_1),
                                                   ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          Container(
-                                            width: 70,
-                                            height: 100,
-                                            child: ListWheelScrollView(
-                                              itemExtent: 50,
-                                              perspective: 0.01,
-                                              diameterRatio: 2.5,
-                                              squeeze: 1,
-                                              onSelectedItemChanged: (val) {
-                                                setState(() {
-                                                  min = val;
-                                                });
-                                              },
-                                              children: List.generate(
-                                                60,
-                                                (index) => Container(
-                                                  width: 80,
-                                                  height: 60,
-                                                  child: Text(
-                                                    "${index}",
-                                                    style: TextStyle(
-                                                        fontSize: 24,
-                                                        color: theme_5,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                  backgroundColor: theme_4,
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
                                                   ),
+                                                  margin: EdgeInsets.all(10),
+                                                  dismissDirection:
+                                                      DismissDirection
+                                                          .horizontal,
                                                 ),
-                                              ),
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          Container(
-                                            width: 70,
-                                            height: 100,
-                                            child: ListWheelScrollView(
-                                              itemExtent: 50,
-                                              perspective: 0.01,
-                                              diameterRatio: 2.5,
-                                              squeeze: 1,
-                                              onSelectedItemChanged: (val) {
-                                                setState(() {
-                                                  sec = val;
-                                                });
-                                              },
-                                              children: List.generate(
-                                                60,
-                                                (index) => Container(
-                                                  width: 80,
-                                                  height: 60,
-                                                  child: Text(
-                                                    "${index}",
-                                                    style: TextStyle(
-                                                        fontSize: 24,
-                                                        color: theme_5,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                              );
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                      "Failed to Saved!!",
+                                                      style: TextStyle(
+                                                          color: theme_1)),
+                                                  backgroundColor: theme_4,
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
                                                   ),
+                                                  margin: EdgeInsets.all(10),
+                                                  dismissDirection:
+                                                      DismissDirection
+                                                          .horizontal,
                                                 ),
-                                              ),
-                                            ),
+                                              );
+                                            }
+                                          });
+                                        },
+                                        child: Container(
+                                          width: 150,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: theme_4,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: theme_3,
+                                                offset: Offset(2, 2),
+                                                blurRadius: 2,
+                                              )
+                                            ],
                                           ),
-                                          Spacer(),
-                                        ],
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Add",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: theme_1),
+                                          ),
+                                        ),
                                       ),
                                     ],
-                                  ),
-                                ),
-                                Spacer(),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          check_page = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 150,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: theme_1,
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "Cancel",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: theme_4),
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          Global.to_do_list_String
-                                              .add(title_Todo!);
-                                          Global.hour.add(hour);
-                                          Global.min.add(min);
-                                          Global.sec.add(sec);
-                                          Global.to_do_Date.add(Date!);
-                                          check_page = false;
-                                          Global.isDone.add(false);
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 150,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: theme_1,
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "Add",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: theme_4),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         )
